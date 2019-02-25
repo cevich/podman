@@ -142,19 +142,16 @@ cd "$LIBPODROOT"
 
 parse_args $@
 
-# Ensure mount-point and data directories exist on host as $USER.  Also prevents
-# permission-denied errors during cleanup() b/c `sudo podman` created mount-points
-# owned by root.
-mkdir $TMPDIR/${LIBPODROOT##$HOME}
-for dirpath in .config/gcloud .config/gcloud/ssh .ssh
-do
-    mkdir -p $HOME/$dirpath
-    mkdir -p $TMPDIR/$dirpath
-done
-# Ssh is picky about permissions, ensure they're correct
-chmod 700 $HOME/.config/gcloud/ssh $TMPDIR/.config/gcloud/ssh
+# gcloud config directory must exist before we try to bind-mount it;
+# otherwise, if podman runs via sudo, it could end up owned by root
+mkdir -p $HOME/.config/gcloud/ssh
+chmod 700 $HOME/.config/gcloud/ssh
 
-cd $LIBPODROOT
+# Likewise for all directories under our bind-mounted home dir; if these
+# are autocreated by sudo podman, we'll be unable to rmdir them in cleanup
+mkdir -p $TMPDIR/.config/gcloud/ssh \
+         $TMPDIR/.ssh \
+         $TMPDIR/${LIBPODROOT##$HOME}
 
 # Attempt to determine if named 'libpod' gcloud configuration exists
 showrun $PGCLOUD info > $TMPDIR/gcloud-info
