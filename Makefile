@@ -1,7 +1,7 @@
 ###
 ### Makefile Navigation
 ###
-#
+
 # This file is organized based on approximate end-to-end workflow:
 #
 # 1.  Variables and common definitions are located at the top
@@ -15,7 +15,7 @@
 # 8.  Release and package-building targets
 # 9.  Targets that install tools, utilities, binaries and packages
 # 10. Uninstall / Cleanup targets
-#
+
 ###
 ### Variables & Definitions
 ###
