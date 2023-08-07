@@ -145,8 +145,9 @@ fi
 # Which distribution are we testing on.
 case "$OS_RELEASE_ID" in
     debian)
-        # FIXME 2023-04-11: workaround for runc regression causing failure
+        # FIXME 2023-04-13: workaround for runc regression causing failure
         # in system tests: "skipping device /dev/char/10:200 for systemd"
+        # (Checked on 2023-08-08 and it's still too old: 1.1.5)
         # FIXME: please remove this once runc >= 1.2 makes it into debian.
         modprobe tun
         ;;
